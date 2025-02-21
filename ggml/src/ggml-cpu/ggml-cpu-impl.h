@@ -299,6 +299,36 @@ inline static uint8x16_t ggml_vqtbl1q_u8(uint8x16_t a, uint8x16_t b) {
 #define ggml_int8x16x2_t  int8x16x2_t
 #define ggml_int8x16x4_t  int8x16x4_t
 
+// by ljk
+//#include <arm_neon.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// 声明并定义 inline 函数
+static inline int8x16x4_t vld1q_s8_x4(const int8_t *ptr) {
+    int8x16x4_t result;
+    result.val[0] = vld1q_s8(ptr);      // 加载第 1 个向量
+    result.val[1] = vld1q_s8(ptr + 16); // 加载第 2 个向量
+    result.val[2] = vld1q_s8(ptr + 32); // 加载第 3 个向量
+    result.val[3] = vld1q_s8(ptr + 48); // 加载第 4 个向量
+    return result;
+}
+
+static inline uint8x16x4_t vld1q_u8_x4(const uint8_t *ptr) {
+    uint8x16x4_t result;
+    result.val[0] = vld1q_u8(ptr);      // 加载第 1 个向量
+    result.val[1] = vld1q_u8(ptr + 16); // 加载第 2 个向量
+    result.val[2] = vld1q_u8(ptr + 32); // 加载第 3 个向量
+    result.val[3] = vld1q_u8(ptr + 48); // 加载第 4 个向量
+    return result;
+}
+
+#ifdef __cplusplus
+}
+#endif
+
 #define ggml_vld1q_s16_x2 vld1q_s16_x2
 #define ggml_vld1q_u8_x2  vld1q_u8_x2
 #define ggml_vld1q_u8_x4  vld1q_u8_x4
